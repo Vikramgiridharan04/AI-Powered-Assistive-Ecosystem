@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Detection</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            transform: translate(-50%, -50%);
+            filter: brightness(0.5); 
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); 
+            z-index: 0;
+        }
+
+        h1 {
+            position: relative;
+            margin-top: 5px;
+            font-size: 40px;
+            text-align: center;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+            animation: fadeIn 2s ease-in-out; 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .back {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(94, 239, 241, 0.8); 
+            color: black;
+            padding: 10px 15px;
+            border-radius: 8px;
+            z-index: 1;
+            transition: background-color 0.3s, transform 0.3s; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .back:hover {
+            background-color: rgba(94, 239, 241, 1); 
+            transform: scale(1.05); 
+        }
+
+        .back a {
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #object_detection {
+            max-width: 100%;
+            max-height: 100%; 
+            z-index: 1;
+            position: relative; 
+            animation: slideIn 1s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .content {
+            text-align: center; 
+            z-index: 1;
+            position: relative; 
+        }
+
+        .button {
+            background-color: rgba(255, 0, 191, 0.8);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.3s; 
+        }
+
+        .button:hover {
+            background-color: rgba(255, 0, 191, 1); 
+            transform: scale(1.05); 
+        }
+
+        .loading {
+            display: none; 
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        .spinner {
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top: 8px;
+            border-top: 8px solid rgba(255, 0, 191, 1);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop>
+        <source src="static/bg.webm" type="video/webm">
+        Your browser does not support the video tag.
+    </video>
+    <div class="overlay"></div>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="back">
+        <a href="/stop_video_feed"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+    <div class="content">
+        <h1>Live Object Detection</h1>
+        <div>
+            <img id="object_detection" src="{{ url_for('video_feed') }}" alt="Live Object Detection Feed" />
+        </div>
+        <button class="button" id="startFeed">Start Feed</button>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#loading').show();
+            $('#object_detection').on('load', function() {
+                $('#loading').hide();
+            });
+            $('#startFeed').click(function() {
+                $('#object_detection').attr('src', '{{ url_for("video_feed") }}'); 
+                $('#loading').show(); 
+            });
+            $('#stopFeed').click(function() {
+                $('#object_detection').attr('src', ''); 
+                $('#loading').hide(); 
+            });
+        });
+</script>
+</body>
+</html>

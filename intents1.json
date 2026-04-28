@@ -1,0 +1,171 @@
+{
+    "intents": [
+      {
+        "tag": "Greetings",
+        "patterns": ["Hi", "Hello"],
+        "responses": ["Hello! How are you"]
+      },
+      {
+        "tag": "Introduction",
+        "patterns": ["fine", "good"],
+        "responses": ["Nice, How can I help?"]
+      },
+
+      {
+        "tag": "ATM Location",
+        "patterns": ["Where is the nearest ATM?", "Find an ATM near me"],
+        "responses": ["You can find the nearest ATM by using your bank's mobile app or website. Would you like help with that?"]
+      },
+      {
+        "tag": "ATM Services",
+        "patterns": ["What services can I use at an ATM?", "What can I do at an ATM?"],
+        "responses": ["At an ATM, you can withdraw cash, check your balance, deposit money, and transfer funds between accounts."]
+      },
+      {
+        "tag": "ATM Issues",
+        "patterns": ["I have a problem with the ATM", "ATM not working"],
+        "responses": ["I'm sorry to hear that! Please contact your bank's customer service for assistance with ATM issues."]
+      },
+      {
+        "tag": "ATM Withdrawal Limits",
+        "patterns": ["What is the ATM withdrawal limit?", "How much can I withdraw from an ATM?"],
+        "responses": ["The withdrawal limit varies by bank and account type. Typically, it ranges from ₹20,000 to ₹50,000 per day. Check with your bank for specific details."]
+      },
+      {
+        "tag": "ATM Fees",
+        "patterns": ["Are there fees for using an ATM?", "What are the ATM withdrawal fees?"],
+        "responses": ["Some ATMs charge fees for withdrawals, especially if they are not affiliated with your bank. It's best to check with your bank for details on fees."]
+      },
+      {
+        "tag": "Card Issues at ATM",
+        "patterns": ["My card is stuck in the ATM", "ATM took my card"],
+        "responses": ["If your card is stuck, please contact your bank immediately. They can assist you in retrieving your card."]
+      },
+      {
+        "tag": "ATM Security",
+        "patterns": ["Is it safe to use an ATM?", "How to use an ATM safely?"],
+        "responses": ["Always be aware of your surroundings when using an ATM. Cover the keypad while entering your PIN and avoid using ATMs in poorly lit or isolated areas."]
+      },
+      {
+        "tag": "ATM Maintenance",
+        "patterns": ["Why is the ATM out of service?", "When will the ATM be fixed?"],
+        "responses": ["ATMs may be out of service for maintenance or due to technical issues. It's best to check with your bank for updates on when it will be operational again."]
+      },
+      {
+        "tag": "ATM Deposit Limits",
+        "patterns": ["What is the ATM deposit limit?", "How much can I deposit at an ATM?"],
+        "responses": ["The deposit limit varies by bank and account type. Typically, it can range from ₹10,000 to ₹1,00,000 per day. Please check with your bank for specific limits."]
+      },
+      {
+        "tag": "International ATM Use",
+        "patterns": ["Can I use my ATM card internationally?", "Using ATM abroad"],
+        "responses": ["Yes, you can use your ATM card internationally, but be sure to inform your bank beforehand to avoid any issues. Also, check for any foreign transaction fees."]
+      },
+      {
+        "tag": "ATM Card Replacement",
+        "patterns": ["How do I replace my ATM card?", "My ATM card is lost"],
+        "responses": ["To replace a lost or damaged ATM card, contact your bank's customer service. They will guide you through the process of getting a new card."]
+      },
+      {
+        "tag": "ATM Transaction History",
+        "patterns": ["How can I check my ATM transaction history?", "View ATM transactions"],
+        "responses": ["You can check your ATM transaction history through your bank's mobile app or online banking portal. Would you like assistance with that?"]
+      },
+      {
+        "tag": "ATM Cash Availability",
+        "patterns": ["Is there cash available at the ATM?", "How much cash can I withdraw from the ATM?"],
+        "responses": ["The cash availability at an ATM can vary based on the location and time. It's best to check with your bank or try a different ATM if you're unsure."]
+      },
+      {
+        "tag": "ATM Currency Exchange",
+        "patterns": ["Can I exchange currency at an ATM?", "ATM currency exchange services"],
+        "responses": ["Some ATMs offer currency exchange services, but it depends on the bank and location. Check with your bank for availability."]
+      },
+      {
+        "tag": "ATM Loan Payments",
+        "patterns": ["Can I pay my loan at an ATM?", "ATM loan payment services"],
+        "responses": ["Yes, many ATMs allow you to make loan payments. Check with your bank for specific instructions on how to do this."]
+      },
+      {
+        "tag": "ATM Contactless Transactions",
+        "patterns": ["Can I use contactless payments at an ATM?", "ATM contactless feature"],
+        "responses": ["Some ATMs support contactless transactions. Look for the contactless symbol on the ATM to see if this feature is available."]
+      },
+      {
+        "tag": "ATM Balance Inquiry",
+        "patterns": ["How do I check my balance at an ATM?", "ATM balance inquiry"],
+        "responses": ["To check your balance at an ATM, simply insert your card, enter your PIN, and select the 'Balance Inquiry' option."]
+      },
+      {
+        "tag": "ATM PIN Change",
+        "patterns": ["How can I change my ATM PIN?", "ATM PIN change process"],
+        "responses": ["You can change your ATM PIN at the ATM by selecting the 'Change PIN' option after entering your current PIN."]
+      },
+      {
+        "tag": "ATM Mini Statement",
+        "patterns": ["How do I get a mini statement from an ATM?", "ATM mini statement request"],
+        "responses": ["To get a mini statement, insert your card, enter your PIN, and select the 'Mini Statement' option from the menu."]
+      },
+      {
+        "tag": "ATM Service Hours",
+        "patterns": ["What are the ATM service hours?", "When can I use the ATM?"],
+        "responses": ["Most ATMs are available 24/7, but some may have specific service hours. It's best to check with your bank for details."]
+      },
+      {
+        "tag": "ATM Emergency Services",
+        "patterns": ["What to do in case of an ATM emergency?", "ATM emergency contact"],
+        "responses": ["In case of an emergency, such as a robbery or medical issue, contact local authorities immediately. Always prioritize your safety."]
+      },
+      {
+        "tag": "ATM User Guide",
+        "patterns": ["How do I use an ATM?", "ATM user instructions"],
+        "responses": ["To use an ATM, insert your card, enter your PIN, and follow the on-screen instructions for your desired transaction."]
+      },
+      {
+        "tag": "ATM Accessibility",
+        "patterns": ["Are ATMs accessible for disabled users?", "ATM accessibility features"],
+        "responses": ["Many ATMs are designed to be accessible for disabled users , featuring audio assistance, braille keypads, and wheelchair access. Check with your bank for specific accessibility options available at their ATMs."]
+      },
+      {
+        "tag": "ATM Maintenance Schedule",
+        "patterns": ["When is the ATM scheduled for maintenance?", "ATM maintenance times"],
+        "responses": ["Maintenance schedules can vary by location. It's best to check with your bank for specific maintenance times for the ATM you plan to use."]
+      },
+      {
+        "tag": "ATM Fraud Prevention",
+        "patterns": ["How can I prevent ATM fraud?", "ATM security tips"],
+        "responses": ["To prevent fraud, always use ATMs in well-lit areas, cover your PIN while entering it, and regularly monitor your bank statements for unauthorized transactions."]
+      },
+      {
+        "tag": "ATM Transaction Limits",
+        "patterns": ["What are the transaction limits at an ATM?", "ATM transaction restrictions"],
+        "responses": ["Transaction limits can vary by bank and account type. Typically, there are limits on the amount you can withdraw or deposit in a single transaction."]
+      },
+      {
+        "tag": "ATM Network Availability",
+        "patterns": ["Which ATM networks can I use?", "ATM network options"],
+        "responses": ["You can use ATMs that are part of your bank's network or affiliated networks. Check with your bank for a list of available ATM networks."]
+      },
+      {
+        "tag": "ATM Feedback",
+        "patterns": ["How can I provide feedback about an ATM?", "ATM feedback process"],
+        "responses": ["To provide feedback, contact your bank's customer service or use their website to submit your comments regarding the ATM experience."]
+      },
+      {
+        "tag": "balance_inquiry",
+        "patterns": ["What is my previous balance?", "Check my balance", "My balance","balance"],
+        "responses": ["Your current balance is {balance}."]
+      },
+      {
+        "tag": "withdrawal",
+        "patterns": ["I want to withdraw 100", "Withdraw 50", "Take out 200"],
+        "responses": ["You have withdrawn {amount}. Your new balance is {balance}."]
+      },
+      {
+        "tag": "deposit",
+        "patterns": ["Deposit 100", "I want to add 50", "Put in 200"],
+        "responses": ["You have deposited {amount}. Your new balance is {balance}."]
+      }
+
+    ]
+  }

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Assistant Dashboard</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: #111;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .background-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 20px;
+      position: fixed;
+      left: -250px;
+      height: 100vh;
+      transition: left 0.3s ease-in-out;
+    }
+
+    .sidebar.open { left: 0; }
+
+    .sidebar h2 {
+      color: orange;
+      font-size: 22px;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: white;
+      font-size: 18px;
+      padding: 12px 20px;
+      display: block;
+      background-image: linear-gradient(to right, rgba(255, 196, 151, 0.6), rgba(53, 104, 222, 0.6));
+      margin: 10px 0;
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .hamburger-menu {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+      z-index: 10;
+    }
+
+    .hamburger-menu.hidden { display: none; }
+
+    .dashboard-container {
+      flex-grow: 1;
+      padding: 20px;
+      transition: margin-left 0.3s ease-in-out;
+      z-index: 1;
+    }
+
+    .dashboard-container.open { margin-left: 250px; }
+
+    .card-container {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+
+    .card {
+      background: rgba(255, 165, 0, 0.3);
+      padding: 20px;
+      text-align: center;
+      border-radius: 10px;
+      transition: transform 0.3s, background 0.3s;
+      cursor: pointer;
+      margin: 10px;
+      flex: 1;
+      max-width: 30%;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      background: rgba(255, 140, 0, 0.5);
+    }
+
+    .more-info { display: none; }
+
+    .learn-more {
+      margin-top: 10px;
+      padding: 10px;
+      background: orange;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .fab {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: orange;
+      color: white;
+      padding: 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 22px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+      z-index: 100;
+    }
+
+    .chatbot-panel {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.5);
+      color: black;
+      width: 350px;
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 200;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .chatbot-panel h3 {
+      margin-bottom: 10px;
+      color: #111;
+    }
+
+    .chatbot-messages {
+      max-height: 220px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+    }
+
+    .message {
+      margin: 5px 0;
+      font-weight: bold;
+    }
+
+    .message.user {
+      text-align: right;
+      color: blue;
+    }
+
+    .message.bot {
+      text-align: left;
+      color: black;
+    }
+
+    .chatbot-input {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chatbot-input input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .chatbot-input button {
+      background: orange;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .voice-link {
+      margin-top: 10px;
+      background-color: #3400cf;
+      padding: 8px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .voice-link a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .chatbot-close {
+      font-size: 22px;
+      color: red;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1000; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%; 
+      overflow: auto ; 
+      background-color: rgb(0,0,0); 
+      background-color: rgba(0,0,0,0.4); 
+    }
+
+
+.modal-content {
+
+background-color: #baacee9f;
+
+margin: 15% auto; 
+
+padding: 20px;
+
+border: 1px solid #06201b;
+
+width: 80%; 
+
+}
+
+
+.close {
+
+color: #aaa;
+
+float: right;
+
+font-size: 28px;
+
+font-weight: bold;
+
+}
+
+
+.close:hover,
+
+.close:focus {
+
+color: black;
+
+text-decoration: none;
+
+cursor: pointer;
+
+}
+
+
+  </style>
+
+</head>
+
+<body>
+
+
+  <video class="background-video" autoplay loop muted>
+
+    <source src="static/bg.webm" type="video/webm">
+
+    Your browser does not support the video tag.
+
+  </video>
+
+
+  <i class="fa-solid fa-bars hamburger-menu" onclick="toggleSidebar()"></i>
+
+
+  <div class="sidebar">
+
+    <h2>AI Assistant</h2>
+
+    <a href="/object"><i class="fa-solid fa-eye"></i> Obstacle Detection</a>
+
+    <a href="/face"><i class="fa-solid fa-user"></i> Face Recognition</a>
+
+    <a href="/uploads"><i class="fa-solid fa-file-alt"></i> Extract Text</a>
+
+    <a href="/register"><i class="fa-solid fa-user-plus"></i> Register</a>
+
+    <a href="/login"><i class="fa-solid fa-sign-in-alt"></i> Login</a>
+
+  </div>
+
+
+  <div class="dashboard-container">
+
+    <h1>Virtual AI Assistant Dashboard</h1>
+
+    <div class="card-container">
+
+      <div class="card">
+
+        <h3>Obstacle Detection</h3>
+      
+        <p>Uses AI vision to detect obstacles.</p>
+      
+        <p class="more-info">Detects objects in real time for improved navigation.</p>
+      
+        <button class="learn-more" onclick="openModal('Obstacle Detection', 'Obstacle detection systems play a crucial role in real-time navigation by identifying objects in the environment to help avoid collisions. They rely on a combination of sensors such as LIDAR, cameras, radar, ultrasonic sensors, and infrared sensors to gather data about the surroundings. This data is processed using algorithms like computer vision and depth perception to detect and understand the location of obstacles. The system often uses sensor fusion, combining inputs from multiple sensors to provide more accurate detection. These systems are widely used in autonomous vehicles, drones, robots, and assistive devices to navigate safely and efficiently, while overcoming challenges like real-time processing, environmental changes, and dynamic obstacles.')">Learn More</button>
+      
+      </div>
+      
+      
+      <div class="card">
+      
+        <h3>Face Recognition</h3>
+      
+        <p>Identifies faces for better interaction.</p>
+      
+        <p class="more-info">Utilizes AI-powered facial analysis for security and personalization.</p>
+      
+        <button class="learn-more" onclick="openModal('Face recognition is an AI-driven technology that analyzes facial features to identify and authenticate individuals, offering applications in security and personalization. It works by capturing an image or video of a person face, extracting unique facial features, and converting them into a digital template. This template is then compared to a database of known faces to find a match. The technology is widely used in security systems for access control, in personal devices like smartphones for user authentication, and in surveillance for monitoring individuals in public spaces. Face recognition enhances security by ensuring only authorized access and enabling personalized experiences.')">Learn More</button>
+      
+      </div>
+      
+      
+      <div class="card">
+      
+        <h3>Extract Text</h3>
+      
+        <p>Extracts text from images and documents.</p>
+      
+        <p class="more-info">OCR technology converts images into readable text.</p>
+      
+        <button class="learn-more" onclick="openModal('OCR (Optical Character Recognition) technology converts images containing text into machine-readable text, enabling easier manipulation and processing. It works by first preprocessing the image to enhance clarity, then detecting text regions and recognizing characters based on shape and patterns. OCR is used to digitize printed documents, scanned images, and even handwritten notes, allowing the text to be edited, searched, and stored in digital formats. Applications of OCR include document digitization, automated data entry, and improving accessibility by converting printed materials into formats that can be read aloud by screen readers.')">Learn More</button>
+      
+      </div>
+
+      <div id="infoModal" class="modal">
+
+        <div class="modal-content">
+    
+          <span class="close" onclick="closeModal()">&times;</span>
+    
+          <h2 id="modalTitle">Title</h2>
+    
+          <p id="modalDescription">Description goes here.</p>
+    
+        </div>
+    
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="fab" onclick="toggleChatbot()">
+
+    <i class="fa-solid fa-robot"></i>
+
+  </div>
+
+
+  <!-- Chatbot Panel -->
+
+  <div id="chatbotPanel" class="chatbot-panel">
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+
+      <h3>AI Chat Assistant</h3>
+
+      <span class="chatbot-close" onclick="toggleChatbot()">&times;</span>
+
+    </div>
+
+
+    <div class="chatbot-messages" id="chatbotMessages">
+
+      <div class="message bot">Hello! I'm your AI Assistant. Ask me anything.</div>
+
+      {% if speech %}
+
+        <div class="message user">{{speech}}</div>
+
+      {% endif %}
+
+      {% if result %}
+
+        <div class="message bot">{{result}}</div> {% endif %}
+
+    </div>
+
+
+    <div class="chatbot-input">
+
+      <input type="text" id="user-input" placeholder="Type your message..." />
+
+      <button onclick="sendMessage()">Send</button>
+
+    </div>
+
+
+    <div class="voice-link">
+
+      <a href="/speak"><i class="fas fa-microphone"></i> Speak now...</a>
+
+    </div>
+
+
+    {% if audio_file %}
+
+    <audio id="response-audio" controls autoplay style="display: none;">
+
+      <source src="{{ audio_file }}" type="audio/mp3">
+
+      Your browser does not support the audio element.
+
+    </audio>
+
+    {% endif %}
+
+  </div>
+
+
+  <script>
+
+    function toggleSidebar() {
+
+      const sidebar = document.querySelector('.sidebar');
+
+      const dashboard = document.querySelector('.dashboard-container');
+
+      const hamburger = document.querySelector('.hamburger-menu');
+
+      sidebar.classList.toggle('open');
+
+      dashboard.classList.toggle('open');
+
+      hamburger.classList.toggle('hidden', sidebar.classList.contains('open'));
+
+    }
+
+  
+
+    function toggleChatbot() {
+
+      const panel = document.getElementById('chatbotPanel');
+
+      const isVisible = panel.style.display === 'block';
+
+      panel.style.display = isVisible ? 'none' : 'block';
+
+    }
+
+
+    function sendMessage() {
+
+      const input = document.getElementById('user-input');
+
+      const message = input.value.trim();
+
+      if (!message) return;
+
+  
+
+      const messagesContainer = document.getElementById('chatbotMessages');
+
+      messagesContainer.innerHTML += `<div class="message user">${message}</div>`;
+
+      input.value = '';
+
+  
+
+      // Keep chatbot panel open
+
+      const panel = document.getElementById('chatbotPanel');
+
+      panel.style.display = 'block';
+
+  
+
+      $.ajax({
+
+        data: { msg: message },
+
+        type: "POST",
+
+        url: "/get"
+
+      }).done(function (data) {
+
+        const botMessage = data || "I didn't get that.";  // Default response
+
+        messagesContainer.innerHTML += `<div class="message bot">${botMessage}</div>`;
+
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+
+        // If the backend provides an audio URL, attempt to play it
+
+        if (data.audio_file) {
+
+          const audio = new Audio(data.audio_file);
+
+          audio.play().catch((err) => {
+
+            console.error("Audio playback failed:", err);
+
+          });
+
+        }
+
+      });
+
+    }
+
+function openModal(title, description) {
+
+  document.getElementById('modalTitle').innerText = title;
+
+  document.getElementById('modalDescription').innerText = description;
+
+  document.getElementById('infoModal').style.display = 'block';
+
+}
+
+
+function closeModal() {
+
+  document.getElementById('infoModal').style.display = 'none';
+
+}
+
+
+window.onclick = function(event) {
+
+  constmodal = document.getElementById('infoModal');
+
+  if (event.target === modal) {
+
+    closeModal();
+
+  }
+
+}
+</script>
+
+  
+
+</body>
+
+</html>

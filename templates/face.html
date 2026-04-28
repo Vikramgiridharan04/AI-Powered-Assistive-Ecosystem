@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            transform: translate(-50%, -50%);
+            filter: brightness(0.5);
+        }
+
+        h1 {
+            position: absolute;
+            top: 10px;
+            margin-top: 5px;
+            font-size: 35px;
+            color: rgb(255, 0, 191);
+            z-index: 1; 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+        }
+
+        #face_detection {
+            max-width: 100%;
+            max-height: 100%; 
+            z-index: 1; 
+            position: relative; 
+        }
+
+        .back {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(94, 239, 241, 0.8); 
+            color: black;
+            padding: 8px;
+            border-radius: 8px;
+            z-index: 1; 
+            transition: background-color 0.3s; 
+        }
+
+        .back a {
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back:hover {
+            background-color: rgba(94, 239, 241, 1); 
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop>
+        <source src="static/bg.webm" type="video/mp4"> 
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="back">
+        <a href="/index"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+    <h1>Face Recognition</h1>
+    <div>
+        <img id="face_detection" src="{{ url_for('video_feed1') }}" alt="Face Detection">
+    </div>
+    <script>
+        $(document).ready(function () {
+            var interval = setInterval(function () {
+                $('#face_detection').attr('src', '{{ url_for("video_feed1") }}' + '?' + new Date().getTime());
+            }, 1000);
+            $(window).on('unload', function () {
+                clearInterval(interval);
+            });
+        });
+    </script>
+</body>
+</html>

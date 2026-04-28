@@ -1,0 +1,6 @@
+venv/ 
+Tesseract-OCR/ 
+*.dll 
+__pycache__/ 
+*.pyc 
+users.db 
